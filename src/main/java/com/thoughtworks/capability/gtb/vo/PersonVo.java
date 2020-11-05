@@ -18,17 +18,16 @@ import java.io.IOException;
 public class PersonVo {
 
   private String id;
-  @JsonSerialize(using = CustomIntegerSerialize.class)
+  @JsonSerialize(nullsUsing = CustomNullToZeroSerialize.class)
   private Integer age;
   private String name;
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String hobby;
 }
 
-class CustomIntegerSerialize extends JsonSerializer<Integer> {
+class CustomNullToZeroSerialize extends JsonSerializer<Object> {
   @Override
-  public void serialize(Integer value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-    if (value == null) gen.writeNumber(0);
-    else gen.writeNumber((Integer) value);
+  public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+    gen.writeNumber(0);
   }
 }
